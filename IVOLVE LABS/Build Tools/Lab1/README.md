@@ -23,22 +23,22 @@ Build, test, and package a Java calculator application using Maven.
 java -version
 mvn -version
 
-2. Clone the application
+### 2. Clone the application
 git clone https://github.com/Ibrahim-Adel15/CalculatorMavenApp.git
 cd CalculatorMavenApp
 
-4. Run the unit tests
+### 3. Run the unit tests
 mvn test
 Maven displays the test results in the terminal and saves detailed reports under target/surefire-reports/.
 
-6. Build the application
+### 4. Build the application
 mvn package
 This creates the packaged JAR file at target/calculator.jar.
 
-7. Run the application
+### 5. Run the application
 java -jar target/calculator.jar
 
-9. Verify the result
+### 6. Verify the result
 Follow the terminal prompts and confirm that the calculator runs and produces the expected result.
 Results
 The test output is saved in [`results/tests.txt`](results/tests.txt)
