@@ -21,16 +21,16 @@ Build, test, and package the Calculator application using Gradle.
 git clone https://github.com/Ibrahim-Adel15/CalculatorGradleApp.git
 cd CalculatorGradleApp
 
-2. Run the unit tests
+### 2. Run the unit tests
 This project does not include the Gradle Wrapper, so use the installed Gradle command:
 gradle test
 
-3. Build the application
+### 3. Build the application
 gradle build
 The build creates the JAR file at:
 build/libs/calculator.jar
 
-4. Run the application
+### 4. Run the application
 java -jar build/libs/calculator.jar
 Enter two numbers when prompted. The application displays their sum, subtraction, multiplication, and division.
 
