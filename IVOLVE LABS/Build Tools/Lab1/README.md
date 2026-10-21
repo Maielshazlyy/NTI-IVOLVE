@@ -1,46 +1,24 @@
-# Build Tools — Lab1
-# Lab 1: Building and Packaging a Java Application with Maven
+# Lab 1: Maven Calculator App
 
-## Objective
+## How to Run
 
-Build, test, and package a Java calculator application using Maven.
+1. Navigate to project folder:
+```bash
+cd ~/Ivolve-lab1/CalculatorMavenApp
+```
 
-## Requirements
+2. Build and package:
+```bash
+mvn clean package
+```
 
-- Java JDK 17 or later
-- Apache Maven
-- Git
+3. Run the application:
+```bash
+java -jar target/calculator-1.0-SNAPSHOT.jar
+```
 
-## Source Code
+## Test Output
+- `CalculatorTest` 
+- Entered `2` and `5` -> Output: `Result: 7`.
 
-[CalculatorMavenApp](https://github.com/Ibrahim-Adel15/CalculatorMavenApp)
-
-## Steps
-
-### 1. Check Java and Maven
-
-
-java -version
-mvn -version
-
-### 2. Clone the application
-git clone https://github.com/Ibrahim-Adel15/CalculatorMavenApp.git
-cd CalculatorMavenApp
-
-### 3. Run the unit tests
-mvn test
-Maven displays the test results in the terminal and saves detailed reports under target/surefire-reports/.
-
-### 4. Build the application
-mvn package
-This creates the packaged JAR file at target/calculator.jar.
-
-### 5. Run the application
-java -jar target/calculator.jar
-
-### 6. Verify the result
-Follow the terminal prompts and confirm that the calculator runs and produces the expected result.
-Results
-The test output is saved in [`results/tests.txt`](results/tests.txt)
-<img width="835" height="301" alt="image" src="https://github.com/user-attachments/assets/16be941d-4e75-451d-b19e-cab0061debec" />
-
+- <img width="1222" height="580" alt="Screenshot 2026-10-21 032811" src="https://github.com/user-attachments/assets/b7b89826-8e9f-42b7-b649-9b27d6153108" />
