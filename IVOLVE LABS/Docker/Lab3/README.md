@@ -69,3 +69,6 @@ If the container has already stopped, run `docker rm container1` directly.
 - `Dockerfile` — instructions for building and running the Docker image.
 - `pom.xml` — Maven project configuration.
 - `src/` — Java application source code and unit tests.
+<img width="981" height="405" alt="image" src="https://github.com/user-attachments/assets/1ada1555-4b00-4cfe-b57f-dd1af64c9c9f" />
+<img width="998" height="52" alt="image" src="https://github.com/user-attachments/assets/fd7ca30d-0516-4d96-85d7-10dca4ce13f5" />
+
