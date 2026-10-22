@@ -192,11 +192,11 @@ docker rm -f container1 container2
 - `app.py` — Flask application.
 - `requirements.txt` — Python application dependencies.
 - `env.txt` — environment variables used for the second container.
-```~~~~
-<img width="1171" height="123" alt="Screenshot 2026-10-22 190611" src="https://github.com/user-attachments/assets/7f662f9e-d688-4a4c-a52e-393b2956e16c" />
+- <img width="1171" height="123" alt="Screenshot 2026-10-22 190611" src="https://github.com/user-attachments/assets/7f662f9e-d688-4a4c-a52e-393b2956e16c" />
 <img width="1165" height="70" alt="Screenshot 2026-10-22 190650" src="https://github.com/user-attachments/assets/c7afd9e2-2fb1-4f5e-9e27-d9f8c0cb115f" />
 <img width="1232" height="343" alt="Screenshot 2026-10-22 190922" src="https://github.com/user-attachments/assets/e530d008-11c9-41f8-9394-4c64cabce5e0" />
 <img width="1256" height="186" alt="Screenshot 2026-10-22 191129" src="https://github.com/user-attachments/assets/0c547905-c261-4748-8347-43fe1ba758cd" />
+``` ~~~~
 
 
 
