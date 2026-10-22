@@ -30,11 +30,7 @@ git clone https://github.com/Ibrahim-Adel15/PythonApp.git
 cd PythonApp
 ```
 
-The application reads `APP_NAME` and `APP_ENV` from environment variables. Add `import os` to `app.py` if it is missing:
-
-```python
-import os
-```
+The application reads `APP_NAME` and `APP_ENV` from environment variables.
 
 The application uses Flask, so create `requirements.txt`:
 
