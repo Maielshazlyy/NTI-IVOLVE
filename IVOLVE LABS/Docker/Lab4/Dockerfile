@@ -1,14 +1,17 @@
-FROM eclipse-temurin:17-jre-noble
+FROM maven:3.9.15-eclipse-temurin-17-alpine AS builder
 
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn -B package
 
-RUN useradd --create-home --shell /bin/bash appuser \
-    && chown appuser:appuser /app
+FROM eclipse-temurin:17-jre-alpine AS runtime
 
-COPY --chown=appuser:appuser target/calculator.jar /app/calculator.jar
+WORKDIR /app
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+COPY --from=builder --chown=appuser:appgroup \
+     /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
 
 USER appuser
-
 EXPOSE 8080
-
-CMD ["java", "-jar", "/app/calculator.jar"]
+CMD ["java", "-jar", "app.jar"]
