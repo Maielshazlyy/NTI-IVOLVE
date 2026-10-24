@@ -85,5 +85,6 @@ docker compose down -v
 The Node.js application and MySQL database ran as separate Compose services. The application was verified through its health endpoint, and its Docker image was pushed to Docker Hub with the `lab8` tag.
 <img width="1252" height="772" alt="image" src="https://github.com/user-attachments/assets/2f15783b-b205-4dce-b2a1-9ab1ad6c645f" />
 <img width="832" height="327" alt="image" src="https://github.com/user-attachments/assets/1ef0447b-5e58-4758-9ae1-f34fc7628c0a" />
+<img width="891" height="253" alt="image" src="https://github.com/user-attachments/assets/5edf54d8-6578-46fc-bc69-e22920c35120" />
 
 <img width="1600" height="700" alt="image" src="https://github.com/user-attachments/assets/3bd146a2-0046-4666-9469-e04d9276a8e2" />
