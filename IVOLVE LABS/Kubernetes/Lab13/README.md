@@ -12,7 +12,6 @@ Create a PersistentVolume (PV) and PersistentVolumeClaim (PVC) for application l
 - **Node path:** `/mnt/app-logs`.
 - **Application mount path:** `/app/logs`.
 
-Kubernetes resource names must be lowercase, so the manifests use `ivolvpv` and `ivolvepvc`.
 
 ## Prepare the Node Directory
 
