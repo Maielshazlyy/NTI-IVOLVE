@@ -88,10 +88,9 @@ Capture screenshots showing:
 1. The Jenkins Users page with `user1` and `user2`.
 2. The Manage Roles page showing permissions for `admin` and `read-only`.
 3. The Assign Roles page showing `user1 → admin` and `user2 → read-only`.
-4. Jenkins signed in as `user2`, showing read-only access.
+
 
 <img width="1747" height="202" alt="image" src="https://github.com/user-attachments/assets/87052eef-d458-42d0-9001-dd0cdb2a68ab" />
 <img width="727" height="737" alt="image" src="https://github.com/user-attachments/assets/a5672e24-85f2-41a8-a446-e7ea2cd1a2eb" />
-<img width="727" height="737" alt="image" src="https://github.com/user-attachments/assets/000aa3e3-e501-46bc-8497-c34a04c4026f" />
 
 
