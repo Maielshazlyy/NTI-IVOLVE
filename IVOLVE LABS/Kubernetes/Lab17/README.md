@@ -69,5 +69,5 @@ The policy selects MySQL Pods labeled `app=ivolvedb`. It permits ingress from ap
 - `policyTypes: Ingress` applies this policy to incoming traffic to the selected MySQL Pod. It does not configure egress restrictions.
 - NetworkPolicy enforcement depends on the cluster network plugin. This cluster uses Calico.
 - During verification, one application Pod was `Running` and another was `Pending` due to the resource capacity constraints from Lab 16. The policy was configured for Pods matching the application label.
- <img width="1250" height="242" alt="image" src="https://github.com/user-attachments/assets/bbbbb6b3-5ce3-4c51-9d81-9e7a371b00e4" />
+ <img width="1572" height="356" alt="WhatsApp Image 2026-11-02 at 11 46 01 AM" src="https://github.com/user-attachments/assets/f42fe682-7e44-4855-a5da-97f97b637d5f" />
 <img width="1250" height="242" alt="WhatsApp Image 2026-11-02 at 11 46 33 AM" src="https://github.com/user-attachments/assets/015d6a67-b107-4d30-936f-bee7b278799c" />
