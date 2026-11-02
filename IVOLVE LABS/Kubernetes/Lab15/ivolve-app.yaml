@@ -91,18 +91,3 @@ spec:
         - name: app-logs
           persistentVolumeClaim:
             claimName: ivolvepvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ivolveappsvc
-  namespace: ivolve
-spec:
-  type: ClusterIP
-  selector:
-    app: ivolveapp
-  ports:
-    - name: http
-      port: 3000
-      targetPort: http
-      protocol: TCP
