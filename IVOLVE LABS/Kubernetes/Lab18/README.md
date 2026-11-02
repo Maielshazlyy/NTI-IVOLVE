@@ -117,7 +117,6 @@ Include screenshots showing:
 4. The Grafana Node Exporter Full dashboard displaying metrics for each node.
 
  <img width="1600" height="286" alt="image" src="https://github.com/user-attachments/assets/6518c01f-d208-41f2-a266-ce1fda2934aa" />
- <img width="1600" height="757" alt="WhatsApp Image 2026-11-02 at 5 48 12 PM" src="https://github.com/user-attachments/assets/89338533-e97a-4788-9904-060cdd4c34b0" />
  <img width="1600" height="757" alt="image" src="https://github.com/user-attachments/assets/3c811d1e-2ada-417b-b53c-0f8ac7edc667" />
  <img width="1600" height="764" alt="image" src="https://github.com/user-attachments/assets/b78ee259-2e92-47dd-8a6a-6024d366248a" />
  <img width="1600" height="737" alt="WhatsApp Image 2026-11-02 at 6 20 52 PM" src="https://github.com/user-attachments/assets/ae0dcb75-1cc3-47fd-89c4-51d3742ca4b6" />
