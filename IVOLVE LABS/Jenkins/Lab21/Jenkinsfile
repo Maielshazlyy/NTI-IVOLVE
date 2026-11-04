@@ -1,0 +1,118 @@
+pipeline {
+    agent any
+
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+        skipDefaultCheckout(true)
+    }
+
+    environment {
+        
+        IMAGE_REPO = 'maielshazly/ivolve-app'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build App') {
+            steps {
+                sh '''
+                    docker run --rm --user 1000:1000 \
+                      -v jenkins_home:/var/jenkins_home \
+                      -w "$WORKSPACE" \
+                      node:18-alpine sh -c 'npm install'
+                '''
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build --pull -t "$IMAGE_REPO:$BUILD_NUMBER" .'
+            }
+        }
+
+        stage('Scan Docker Image') {
+            steps {
+                sh '''
+                    /var/jenkins_home/bin/trivy image \
+                      --db-repository ghcr.io/aquasecurity/trivy-db:2 \
+                      --scanners vuln \
+                      --severity HIGH,CRITICAL \
+                      --exit-code 0 \
+                      "$IMAGE_REPO:$BUILD_NUMBER"
+                '''
+            }
+        }
+
+        stage('Push Image to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKERHUB_USER',
+                    passwordVariable: 'DOCKERHUB_TOKEN'
+                )]) {
+                    sh '''
+                        set +x
+                        echo "$DOCKERHUB_TOKEN" | docker login \
+                          --username "$DOCKERHUB_USER" \
+                          --password-stdin
+                        docker push "$IMAGE_REPO:$BUILD_NUMBER"
+                    '''
+                }
+            }
+        }
+
+        stage('Delete Local Image') {
+            steps {
+                sh 'docker image rm "$IMAGE_REPO:$BUILD_NUMBER"'
+            }
+        }
+
+        stage('Update Deployment Image') {
+            steps {
+                sh '''
+                    sed -i "s#image: maielshazly/ivolve-app:.*#image: ${IMAGE_REPO}:${BUILD_NUMBER}#" k8s/deployment.yaml
+                    grep "image: maielshazly/ivolve-app:" k8s/deployment.yaml
+                '''
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                withCredentials([file(
+                    credentialsId: 'k8s-kubeconfig',
+                    variable: 'KUBECONFIG'
+                )]) {
+                    sh '''
+                        /var/jenkins_home/bin/kubectl apply -f k8s/deployment.yaml
+                        /var/jenkins_home/bin/kubectl apply -f k8s/service.yaml
+                        /var/jenkins_home/bin/kubectl rollout status deployment/ivolveapp \
+                          --namespace ivolve \
+                          --timeout=300s
+                        /var/jenkins_home/bin/kubectl get deployment,pods,service \
+                          --namespace ivolve \
+                          -o wide
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            sh 'docker logout >/dev/null 2>&1 || true'
+        }
+        success {
+            echo 'Lab 21 pipeline completed successfully.'
+        }
+        failure {
+            echo 'Lab 21 pipeline failed. Check the stage logs above.'
+        }
+    }
+}
+
