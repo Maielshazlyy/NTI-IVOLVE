@@ -70,13 +70,10 @@ kubectl get deployment ivolveapp -n ivolve \
 ```
 
 Confirm the Deployment is ready, the application Pods are `Running`, the Service exists, and the image tag matches the Jenkins build number.
+<img width="1862" height="667" alt="image" src="https://github.com/user-attachments/assets/abc87108-0f0f-4900-9026-c4156e798c50" />
 
-## Evidence to Submit
+<img width="1600" height="305" alt="WhatsApp Image 2026-11-04 at 12 20 07 PM" src="https://github.com/user-attachments/assets/8ce0c0b5-bd7e-40a6-9962-55a1e1fa4337" />
+<img width="1385" height="425" alt="WhatsApp Image 2026-11-04 at 12 20 07 PM (1)" src="https://github.com/user-attachments/assets/242ffb03-a204-4401-a8a7-dcae2a9bbf20" />
+<img width="1452" height="467" alt="WhatsApp Image 2026-11-04 at 12 21 21 PM" src="https://github.com/user-attachments/assets/c5c3605a-5353-492e-818e-49c5b87cb8f5" />
 
-- A Jenkins screenshot showing the completed pipeline stages.
-- The successful build's Console Output.
-- A Docker Hub screenshot showing the image tag produced by the build.
-- Kubernetes output showing the application Deployment, Pods, and Service in the `ivolve` namespace.
-- This repository containing the application source, Dockerfile, Jenkinsfile, Kubernetes manifests, and README.
 
-Do not include credentials, password values, secret manifests, or kubeconfig files in screenshots or GitHub.
