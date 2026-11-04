@@ -1,55 +1,155 @@
-# Jenkins Lab 22 — CI/CD Pipeline with Shared Libraries and Agent
+# Jenkins Lab 22 — CI/CD Pipeline with Shared Libraries and Jenkins Agent
 
-## Overview
+## Objective
 
-This lab runs the iVolve Node.js and MySQL application from the earlier Docker/Kubernetes labs through a Jenkins pipeline on a dedicated inbound agent. The pipeline uses three Jenkins Shared Library steps:
+Build and deploy the iVolve Node.js and MySQL application from the earlier Docker and Kubernetes labs using Jenkins.
 
-1. `BuildApp` installs Node.js dependencies, runs the unit tests, and checks JavaScript syntax.
-2. `BuildImage` builds the Docker image, scans it with Trivy, pushes it to Docker Hub, and removes the local image.
-3. `DeployOnK8s` updates the image in the Kubernetes Deployment manifest, applies the Deployment and Service, and waits for rollout completion.
+This lab uses a dedicated Jenkins inbound agent and three shared-library steps:
 
-## Repository contents
+1. **BuildApp** — install dependencies, run unit tests, and validate JavaScript syntax.
+2. **BuildImage** — build the Docker image, scan it with Trivy, push it to Docker Hub, and remove the local image.
+3. **DeployOnK8s** — update the image in the Kubernetes Deployment, apply the Deployment and Service, and verify the rollout.
 
-- `Jenkinsfile` — pipeline that calls the shared library steps on the `lab22-agent` label.
-- `vars/BuildApp.groovy`, `vars/BuildImage.groovy`, `vars/DeployOnK8s.groovy` — global shared library steps.
-- `agent/Dockerfile` — reproducible inbound-agent image with Node.js/npm, Docker CLI, kubectl, and Trivy.
-- `Dockerfile`, `server.js`, `db.js`, `db-check.js`, `frontend/` — application source and image build instructions.
-- `test/db-check.test.js` — unit tests using Node's built-in test runner.
-- `k8s/deployment.yaml`, `k8s/service.yaml` — Kubernetes resources for the application.
+## Project Structure
 
-## Jenkins configuration
+```text
+.
+├── agent/
+│   └── Dockerfile
+├── frontend/
+├── k8s/
+│   ├── deployment.yaml
+│   └── service.yaml
+├── test/
+│   └── db-check.test.js
+├── vars/
+│   ├── BuildApp.groovy
+│   ├── BuildImage.groovy
+│   └── DeployOnK8s.groovy
+├── .dockerignore
+├── Dockerfile
+├── Jenkinsfile
+├── db-check.js
+├── db.js
+├── package.json
+└── server.js
+```
 
-Configure a Global Pipeline Library named `ivolve-lab22`, using this repository and the `main` branch. The `Jenkinsfile` imports it with `@Library('ivolve-lab22')`.
+## Application and Unit Tests
 
-Create a permanent inbound agent with the label `lab22-agent`. Build its image from `agent/Dockerfile`, then run it with access to the Docker socket and a Jenkins-generated inbound-agent secret. Keep the secret in Jenkins/your local environment; never commit it or include it in screenshots.
+The application uses Node.js, Express, and MySQL. The unit tests use Node.js's built-in test runner, so no separate test framework is required.
 
-Create these Jenkins credentials:
-
-- `dockerhub-creds` — Docker Hub username and access token/password.
-- `k8s-kubeconfig` — Kubernetes kubeconfig as a Secret file.
-- A GitHub credential with read access if the repository is private.
-
-## Kubernetes prerequisites
-
-The cluster must already have namespace `ivolve`, the MySQL service/database, ConfigMap `ivolvcm`, Secret `ivolvesecret`, and PVC `ivolvepvc` from the earlier labs. The target worker must have label `project=ivolve` and tolerate the workload taint used by the application Deployment.
-
-## Run locally
-
-Run the unit tests with:
+Run locally from the project directory:
 
 ```bash
 npm install
 npm test
 ```
 
-Build the agent image with:
+The tests check the database helper's response when the `ivolve` database exists and when it does not.
+
+## Jenkins Shared Library
+
+In Jenkins, configure a Global Pipeline Library with:
+
+- **Name:** `ivolve-lab22`
+- **Default version:** `main`
+- **Source:** this Git repository
+- **Library path:** repository root
+
+The `Jenkinsfile` loads the library with:
+
+```groovy
+@Library('ivolve-lab22') _
+```
+
+### BuildApp
+
+`vars/BuildApp.groovy` installs npm dependencies, runs `npm test`, and checks the syntax of `server.js`.
+
+### BuildImage
+
+`vars/BuildImage.groovy` builds the application image, scans it with Trivy, pushes it to Docker Hub using Jenkins credentials, and removes the local image.
+
+### DeployOnK8s
+
+`vars/DeployOnK8s.groovy` updates the image in `k8s/deployment.yaml`, applies the Deployment and Service, waits for rollout completion, and displays the Kubernetes resources.
+
+## Jenkins Agent
+
+Create a permanent inbound Jenkins agent with the label:
+
+```text
+lab22-agent
+```
+
+The agent needs:
+
+- Java 21 for Jenkins Remoting
+- Node.js and npm
+- Docker CLI and access to the Docker socket
+- Trivy
+- kubectl
+
+Build the agent image from the repository root:
 
 ```bash
 docker build -f agent/Dockerfile -t ivolve-lab22-agent:latest .
 ```
 
-Configure the Jenkins Pipeline job to use **Pipeline script from SCM**, this repository, branch `*/main`, and script path `Jenkinsfile`.
+Run the agent with the Jenkins URL, agent name and Jenkins-generated secret, WebSocket enabled, a work directory, and access to the Docker socket. Keep the agent secret private. Do not commit it or include it in screenshots.
 
-## Security note
+## Jenkins Credentials
 
-No passwords, personal access tokens, kubeconfig files, or inbound-agent secrets belong in this repository. Store them in Jenkins credentials or local secret storage.
+Create these Jenkins credentials:
+
+- `dockerhub-creds` — Docker Hub username and access token or password.
+- `k8s-kubeconfig` — Kubernetes kubeconfig stored as a Secret file.
+- A GitHub credential with read access if the repository is private.
+
+Do not put passwords, access tokens, kubeconfig files, or agent secrets in this repository.
+
+## Kubernetes Prerequisites
+
+The cluster should already contain the resources created in earlier labs:
+
+- Namespace `ivolve`
+- MySQL StatefulSet and Service
+- ConfigMap `ivolvcm`
+- Secret `ivolvesecret`
+- PersistentVolumeClaim `ivolvepvc`
+- A worker node labeled `project=ivolve` with the toleration required by the application Deployment
+
+The application Deployment uses these resources to connect to MySQL and mount application logs.
+
+## Jenkins Pipeline Job
+
+Create a Jenkins Pipeline job with:
+
+- **Definition:** Pipeline script from SCM
+- **SCM:** Git
+- **Repository:** this Lab 22 repository
+- **Branch:** `*/main`
+- **Script Path:** `Jenkinsfile`
+
+The pipeline runs on the `lab22-agent` label and calls the shared-library steps in this order:
+
+```text
+Build App → Build, Scan, Push Image → Deploy to Kubernetes
+```
+
+## Verification
+
+Confirm that:
+
+- The Jenkins build finishes with **SUCCESS**.
+- The three pipeline stages complete successfully.
+- Both unit tests pass.
+- The Docker image scan and Docker Hub push complete.
+- The Kubernetes Deployment rollout succeeds.
+- The `lab22-agent` node is online.
+
+<img width="1897" height="634" alt="image" src="https://github.com/user-attachments/assets/21b5fdb0-fc57-4b17-a490-0497ecf6c6ab" />
+<img width="1807" height="627" alt="image" src="https://github.com/user-attachments/assets/605cbdf2-e022-4f0e-a5e6-59e2d02ff599" />
+
+
