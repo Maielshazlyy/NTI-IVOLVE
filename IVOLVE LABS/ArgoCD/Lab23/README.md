@@ -19,7 +19,7 @@ This public folder is a submission/reference copy. The private Lab22 repository 
 - `Jenkinsfile` — runs the CI/CD stages on the `lab22-agent` Jenkins agent and invokes the shared-library functions.
 - `vars/BuildApp.groovy` — application build and test step.
 - `vars/BuildImage.groovy` — Docker build, Trivy scan, Docker Hub push, and local image cleanup.
-- `vars/DeployOnK8s.groovy` — updates the image tag in `k8s/deployment.yaml` and pushes the updated manifest to the GitOps repository.
+- `vars/UpdateDeployment.groovy` — updates the image tag in `k8s/deployment.yaml` and pushes the updated manifest to the GitOps repository. This is the GitOps update stage; it does not run `kubectl apply` or require a kubeconfig credential.
 - `k8s/deployment.yaml` — Node.js Deployment; consumes the existing ConfigMap and Secret, initializes the database, and mounts the Lab13 PVC for logs.
 - `k8s/service.yaml` — ClusterIP service exposing the app on port 3000.
 - `argocd-application.yaml` — declarative reference equivalent of the Argo CD application created in the UI.
@@ -32,11 +32,12 @@ Configure these in Jenkins; keep all secret values out of Git:
 2. Docker Hub credential ID `dockerhub-creds` for image publishing.
 3. GitHub write credential ID `github-write-creds` for committing and pushing the updated manifest.
 4. Jenkins agent `lab22-agent` with Docker, Node.js/npm, Trivy, and kubectl, with access to Docker Engine and the Kubernetes cluster.
-5. If the shared deployment step needs a kubeconfig credential, configure the referenced file credential in Jenkins separately.
 
 Never commit GitHub or Docker Hub tokens, database passwords, kubeconfig files, or agent connection secrets.
 
 ## Argo CD application settings
+
+The submission path is two nested folders: `IVOLVE LABS/ArgoCD/Lab23/`. `ArgoCD` is the parent directory and `Lab23` is a folder inside it; do not create one directory literally named `ArgoCD/Lab23`.
 
 The application configuration is:
 
@@ -49,6 +50,36 @@ The application configuration is:
 - Automated synchronization enabled
 
 The YAML in `argocd-application.yaml` documents these settings. The live application was created through the Argo CD UI. Do not apply this file if an application named `ivolve` already exists, since that would attempt to manage the same object declaratively.
+
+## Open the Argo CD UI securely
+
+Use two terminals and an SSH tunnel. This avoids exposing the Argo CD web port directly to the internet.
+
+**Terminal 1 — SSH session on the control-plane:** check that the Kubernetes API is ready:
+
+```bash
+sudo curl -k --max-time 15 https://127.0.0.1:6443/readyz
+```
+
+Continue when it returns `ok`. Start the port-forward and leave it running:
+
+```bash
+sudo kubectl --kubeconfig=/etc/kubernetes/admin.conf \
+  --server=https://127.0.0.1:6443 \
+  --tls-server-name=172.31.12.222 \
+  port-forward --address 127.0.0.1 -n argocd svc/argocd-server 8081:443
+```
+
+The terminal should show `Forwarding from 127.0.0.1:8081 -> 443`.
+
+**Terminal 2 — PowerShell on your computer:** substitute the control-plane's current public IPv4 address. Leave this tunnel running too:
+
+```powershell
+ssh -N -i "D:\Users\Shazly\Downloads\k8s-key.pem" `
+  -L 8081:127.0.0.1:8081 ubuntu@<CONTROL_PUBLIC_IP>
+```
+
+Open `https://localhost:8081` in your browser. Both terminals must remain open. If SSH prints `channel open failed: connect failed: Connection refused`, the port-forward in Terminal 1 is not running or has stopped; restart it. If `kubectl` reports `Forbidden`, use the authorized admin kubeconfig shown above rather than broadening access.
 
 ## Steps performed
 
