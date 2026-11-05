@@ -73,7 +73,8 @@ kubectl get deployment ivolveapp -n ivolve -o jsonpath='{.spec.template.spec.con
 In Argo CD, confirm **Healthy**, **Synced**, and automatic sync. In Jenkins, confirm the test/build, image scan and push, and Git manifest update stages all succeeded. A successful image push by itself does not prove the GitOps update succeeded.
 
 <img width="1557" height="875" alt="image" src="https://github.com/user-attachments/assets/94353f14-0e22-44a5-b66b-80e1a8a76ca1" />
-<img width="1600" height="546" alt="image" src="https://github.com/user-attachments/assets/0cefa92c-233a-45c8-82b5-1ab18c01edf8" />
+<img width="1900" height="617" alt="image" src="https://github.com/user-attachments/assets/a5f622c3-4a27-4d61-826f-7667eb6ca779" />
+
 <img width="1092" height="202" alt="image" src="https://github.com/user-attachments/assets/23ecb046-65e1-4f3d-848c-9c95201fb01c" />
 
 
