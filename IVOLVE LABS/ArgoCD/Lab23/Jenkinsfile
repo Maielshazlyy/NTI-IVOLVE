@@ -27,13 +27,11 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Update Deployment') {
             steps {
-                DeployOnK8s(
+                UpdateDeployment(
                     imageRepo: env.IMAGE_REPO,
-                    namespace: 'ivolve',
-                    deploymentName: 'ivolveapp',
-                    kubeconfigCredentialsId: 'k8s-kubeconfig'
+                    githubCredentialsId: 'github-write-creds'
                 )
             }
         }
