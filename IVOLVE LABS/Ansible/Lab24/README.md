@@ -74,6 +74,8 @@ worker | SUCCESS => {
 
 This is Ansible's `ping` module. It verifies SSH access and Python execution on the managed host; it is not an ICMP ping.
 
+![Ansible ping module succeeded on the worker](screenshots/01-worker-ping.png)
+
 ## 5. Install Docker with an ad-hoc command
 
 ```bash
@@ -98,12 +100,16 @@ ansible managed -i inventory.ini -b -m command \
 
 The worker returned Docker `29.1.3`. Verify the service and version directly over SSH as well:
 
+![Docker version returned by an Ansible ad-hoc command](screenshots/02-docker-version-via-ansible.png)
+
 ```bash
 ssh -i ~/.ssh/ansible_lab ubuntu@<WORKER_PRIVATE_IP> \
   "sudo systemctl is-active docker; docker --version"
 ```
 
 Expected service state: `active`.
+
+![Docker service is active and its version is verified on the worker](screenshots/03-docker-service-active.png)
 
 ## Files
 
@@ -113,13 +119,7 @@ Expected service state: `active`.
 
 The working `inventory.ini` and SSH private keys must remain outside Git.
 
-## Screenshots to add
-
-Save screenshots in `screenshots/` and show the relevant command and successful result without exposing private keys or credentials:
-
-1. `01-ansible-version.png` — Ansible version on the control node.
-2. `02-worker-ping.png` — Ansible ping result showing `SUCCESS` and `pong`.
-3. `03-docker-installed.png` — ad-hoc Docker installation/version and service verification showing `active`.
+Screenshots are embedded beside the steps they document. They show the Ansible connectivity check, Docker version returned by Ansible, and Docker service verification. Do not include private keys or credentials in screenshots.
 
 ## Result
 
