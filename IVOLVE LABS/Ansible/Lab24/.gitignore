@@ -1,0 +1,13 @@
+# Real host addresses and environment-specific inventory
+inventory.ini
+
+# Private SSH keys and EC2 credentials
+*.pem
+ansible_lab
+ansible_lab.pub
+id_rsa
+id_ed25519
+
+# Ansible runtime files
+*.retry
+.ansible/
