@@ -39,6 +39,7 @@ kubectl --request-timeout=20s get pods -n ivolve
 kubectl --request-timeout=20s get pods -n argocd
 ```
 
-## Screenshots
+<img width="1485" height="450" alt="image" src="https://github.com/user-attachments/assets/75ffcc2e-4613-432a-a669-994ade48b0a6" />
+<img width="1402" height="162" alt="image" src="https://github.com/user-attachments/assets/48ea1d9b-0344-4a7f-8490-fe91983bbe2c" />
 
-Save screenshots in a `screenshots/` directory in the lab submission. Capture the successful playbook run with the role names and `failed=0`, the final version/service checks with Jenkins HTTP `200`, and the Kubernetes nodes and workloads. Keep credentials and private keys out of screenshots.
+
