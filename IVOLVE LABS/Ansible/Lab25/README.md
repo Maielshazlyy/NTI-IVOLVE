@@ -56,3 +56,7 @@ ssh -i ~/.ssh/ansible_lab ubuntu@<WORKER_PRIVATE_IP> \
 ## Security
 
 Do not commit a real inventory, private SSH key, cloud key, password, or Jenkins initial-admin credential. Keep screenshots free of secrets.
+<img width="1357" height="312" alt="image" src="https://github.com/user-attachments/assets/1b37b4bc-9695-435a-870c-0dab8641c0c3" />
+<img width="1457" height="455" alt="WhatsApp Image 2026-11-10 at 4 01 45 PM" src="https://github.com/user-attachments/assets/c35dfd9d-ea47-4144-9489-8d444a5735d1" />
+
+
