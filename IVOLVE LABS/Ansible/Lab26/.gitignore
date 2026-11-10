@@ -1,0 +1,6 @@
+inventory.ini
+*.pem
+ansible_lab
+ansible_lab.pub
+*.retry
+.ansible/

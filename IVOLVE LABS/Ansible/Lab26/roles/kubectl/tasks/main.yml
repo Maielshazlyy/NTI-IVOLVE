@@ -1,0 +1,7 @@
+---
+- name: Ensure kubectl is installed
+  ansible.builtin.apt:
+    name: kubectl
+    state: present
+    update_cache: true
+    cache_valid_time: 3600

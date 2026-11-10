@@ -1,0 +1,50 @@
+---
+- name: Configure managed worker using reusable Ansible roles
+  hosts: managed
+  become: true
+  gather_facts: true
+
+  roles:
+    - docker
+    - kubectl
+    - jenkins
+
+  post_tasks:
+    - name: Get Docker version
+      ansible.builtin.command: docker --version
+      register: docker_version
+      changed_when: false
+
+    - name: Get kubectl version
+      ansible.builtin.command: kubectl version --client
+      register: kubectl_version
+      changed_when: false
+
+    - name: Get Java version
+      ansible.builtin.command: java -version
+      register: java_version
+      changed_when: false
+
+    - name: Check Docker and Jenkins services
+      ansible.builtin.command: systemctl is-active {{ item }}
+      loop:
+        - docker
+        - jenkins
+      register: service_states
+      changed_when: false
+
+    - name: Check Jenkins HTTP endpoint
+      ansible.builtin.uri:
+        url: http://127.0.0.1:8080/login
+        status_code: 200
+      register: jenkins_http
+
+    - name: Display verification results
+      ansible.builtin.debug:
+        msg:
+          - "{{ docker_version.stdout }}"
+          - "{{ kubectl_version.stdout }}"
+          - "{{ java_version.stderr_lines[0] }}"
+          - "Docker service: {{ service_states.results[0].stdout }}"
+          - "Jenkins service: {{ service_states.results[1].stdout }}"
+          - "Jenkins HTTP status: {{ jenkins_http.status }}"
