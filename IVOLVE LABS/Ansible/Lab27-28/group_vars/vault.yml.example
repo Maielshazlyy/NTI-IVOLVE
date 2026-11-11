@@ -1,0 +1,3 @@
+# Create group_vars/vault.yml with ansible-vault; do not use this placeholder
+# as a real password or commit a plaintext password.
+vault_mysql_password: "REPLACE_WITH_A_STRONG_PASSWORD"

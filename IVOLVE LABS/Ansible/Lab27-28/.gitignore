@@ -1,0 +1,8 @@
+group_vars/vault.yml
+group_vars/ivolve_servers.yml
+*.pem
+vault-password.txt
+*.vault-pass
+*.retry
+.ansible/
+.aws/

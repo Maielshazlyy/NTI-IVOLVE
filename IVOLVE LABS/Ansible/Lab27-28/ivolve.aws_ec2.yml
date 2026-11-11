@@ -1,0 +1,19 @@
+---
+plugin: amazon.aws.aws_ec2
+
+regions:
+  - eu-north-1
+
+filters:
+  instance-state-name: running
+  tag:server: ivolve
+
+hostnames:
+  - private-ip-address
+
+compose:
+  ansible_host: private_ip_address
+
+groups:
+  # Filters above already select running instances tagged server=ivolve.
+  ivolve_servers: true

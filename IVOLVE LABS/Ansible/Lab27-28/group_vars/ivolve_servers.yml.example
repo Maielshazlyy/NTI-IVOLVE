@@ -1,0 +1,4 @@
+ansible_user: ubuntu
+# Set this to the private key path on your Ansible control node.
+ansible_ssh_private_key_file: /home/ubuntu/.ssh/lab28-ansible.pem
+ansible_python_interpreter: /usr/bin/python3

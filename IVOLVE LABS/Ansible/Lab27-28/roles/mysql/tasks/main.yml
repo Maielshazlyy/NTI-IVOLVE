@@ -1,0 +1,32 @@
+---
+- name: Install MySQL server and Python driver
+  ansible.builtin.apt:
+    name:
+      - mysql-server
+      - python3-pymysql
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Enable and start MySQL
+  ansible.builtin.service:
+    name: mysql
+    state: started
+    enabled: true
+
+- name: Create the ivolve database
+  community.mysql.mysql_db:
+    name: ivolve
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Create ivolveuser with privileges on the ivolve database
+  community.mysql.mysql_user:
+    name: ivolveuser
+    password: "{{ vault_mysql_password }}"
+    priv: "ivolve.*:ALL"
+    host: localhost
+    state: present
+    update_password: on_create
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  no_log: true

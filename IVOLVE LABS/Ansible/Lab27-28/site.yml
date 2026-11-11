@@ -1,0 +1,23 @@
+---
+- name: Configure tagged ivolve EC2 instances with MySQL
+  hosts: ivolve_servers
+  become: true
+  gather_facts: true
+  vars_files:
+    - group_vars/vault.yml
+
+  roles:
+    - mysql
+
+  post_tasks:
+    - name: List databases using the provisioned database user
+      community.mysql.mysql_query:
+        login_user: ivolveuser
+        login_password: "{{ vault_mysql_password }}"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        query: SHOW DATABASES
+      register: mysql_database_check
+
+    - name: Display databases visible to ivolveuser
+      ansible.builtin.debug:
+        var: mysql_database_check.query_result
