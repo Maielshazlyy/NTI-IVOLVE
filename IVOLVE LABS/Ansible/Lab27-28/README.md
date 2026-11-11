@@ -352,10 +352,10 @@ Use readable crops and ensure credentials, public keys, private-key contents, an
 ```markdown
 ![Dynamic inventory showing the tagged EC2 host](screenshots/01-dynamic-inventory.png)
 ```
+<img width="1261" height="222" alt="image" src="https://github.com/user-attachments/assets/30beff3a-a56c-4f18-86f7-6c8edc7140a7" />
+<img width="1472" height="641" alt="image" src="https://github.com/user-attachments/assets/4c5d834e-9c0d-4d6e-8e94-dcb2e74f61bb" />
 
-## Security and cleanup
+<img width="1482" height="571" alt="image" src="https://github.com/user-attachments/assets/cd9d8acb-23ad-4e32-9b06-fa9dbeb6e55d" />
 
-- Commit only `group_vars/vault.yml.example`, never the actual encrypted `group_vars/vault.yml` unless you have a deliberate secure repository policy. This repository ignores the actual file by default.
-- Never commit SSH private keys, AWS access keys, or a Vault password file. Rotate a credential if it was accidentally exposed.
-- Remove the `server=ivolve` tag if you keep the instance but do not want future inventory runs to manage it.
-- Stop or terminate the dedicated EC2 instance after the exercise to avoid ongoing charges.
+
+
